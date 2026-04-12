@@ -13,15 +13,73 @@ header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
 .tabs { display: flex; padding: 0 1.5rem; background: #fff; border-bottom: 1px solid #e5e7eb; }
 .tab { padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: #6b7280; background: none; border-top: none; border-left: none; border-right: none; }
 .tab.active { color: #1a5c3a; border-bottom-color: #1a5c3a; }
-.content { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+.content { padding: 1.5rem; max-width: 960px; margin: 0 auto; }
 .section-label { font-size: 12px; color: #6b7280; margin-bottom: 1rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 10px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: #1a5c3a; }
+.card.active { border-color: #1a5c3a; box-shadow: 0 2px 12px rgba(26,92,58,0.12); }
 .card-icon { width: 48px; height: 48px; background: #f0f9f4; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.card-name { font-size: 15px; font-weight: 600; }
-.card-type { font-size: 11px; color: #9ca3af; }
-.card-btn { font-size: 12px; color: #1a5c3a; border: 1px solid #1a5c3a; border-radius: 8px; padding: 6px 0; background: transparent; cursor: pointer; width: 100%; margin-top: auto; }
-.card-btn:hover { background: #f0f9f4; }
+.card-name { font-size: 14px; font-weight: 600; }
+.card-sub { font-size: 11px; color: #9ca3af; }
+.card-btn { font-size: 11px; color: #1a5c3a; border: 1px solid #1a5c3a; border-radius: 8px; padding: 5px 0; background: transparent; cursor: pointer; width: 100%; margin-top: auto; }
+.detail-panel { display: none; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+.detail-panel.show { display: block; }
+.detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.detail-title { font-size: 18px; font-weight: 600; }
+.detail-title span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 8px; }
+.detail-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; line-height: 1; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.detail-table tr { border-bottom: 1px solid #f3f4f6; }
+.detail-table tr:last-child { border-bottom: none; }
+.detail-table td { padding: 10px 0; vertical-align: top; }
+.detail-table td:first-child { color: #6b7280; width: 90px; font-size: 13px; }
+.detail-table td:last-child { color: #1a1a1a; line-height: 1.6; }
+.detail-actions { display: flex; gap: 8px; margin-top: 1.25rem; }
+.btn-primary { padding: 9px 20px; border-radius: 8px; border: none; background: #1a5c3a; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; }
+.btn-secondary { padding: 9px 20px; border-radius: 8px; border: 1px solid #1a5c3a; background: transparent; color: #1a5c3a; cursor: pointer; font-size: 13px; font
+
+@'
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주안메디칼 취급 제품</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f7f8fa; color: #1a1a1a; }
+header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 1.2rem 1.5rem; position: sticky; top: 0; z-index: 10; }
+header h1 { font-size: 17px; font-weight: 600; }
+header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
+.tabs { display: flex; padding: 0 1.5rem; background: #fff; border-bottom: 1px solid #e5e7eb; }
+.tab { padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: #6b7280; background: none; border-top: none; border-left: none; border-right: none; }
+.tab.active { color: #1a5c3a; border-bottom-color: #1a5c3a; }
+.content { padding: 1.5rem; max-width: 960px; margin: 0 auto; }
+.section-label { font-size: 12px; color: #6b7280; margin-bottom: 1rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: #1a5c3a; }
+.card.active { border-color: #1a5c3a; box-shadow: 0 2px 12px rgba(26,92,58,0.12); }
+.card-icon { width: 48px; height: 48px; background: #f0f9f4; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.card-name { font-size: 14px; font-weight: 600; }
+.card-sub { font-size: 11px; color: #9ca3af; }
+.card-btn { font-size: 11px; color: #1a5c3a; border: 1px solid #1a5c3a; border-radius: 8px; padding: 5px 0; background: transparent; cursor: pointer; width: 100%; margin-top: auto; }
+.detail-panel { display: none; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+.detail-panel.show { display: block; }
+.detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.detail-title { font-size: 18px; font-weight: 600; }
+.detail-title span { font-size: 13px; font-weight: 400; color: #6b7280; margin-left: 8px; }
+.detail-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #9ca3af; line-height: 1; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.detail-table tr { border-bottom: 1px solid #f3f4f6; }
+.detail-table tr:last-child { border-bottom: none; }
+.detail-table td { padding: 10px 0; vertical-align: top; }
+.detail-table td:first-child { color: #6b7280; width: 90px; font-size: 13px; }
+.detail-table td:last-child { color: #1a1a1a; line-height: 1.6; }
+.detail-actions { display: flex; gap: 8px; margin-top: 1.25rem; }
+.btn-primary { padding: 9px 20px; border-radius: 8px; border: none; background: #1a5c3a; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; }
+.btn-secondary { padding: 9px 20px; border-radius: 8px; border: 1px solid #1a5c3a; background: transparent; color: #1a5c3a; cursor: pointer; font-size: 13px; font-weight: 500; }
 .pharma-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 .pharma-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.25rem 1rem; display: flex; align-items: center; justify-content: center; min-height: 70px; text-align: center; font-size: 14px; font-weight: 600; color: #374151; }
 .contact-bar { margin-top: 2rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
@@ -42,8 +100,19 @@ header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
 </div>
 <div class="content">
   <div id="tab-device">
-    <p class="section-label">취급 의료기기 목록</p>
+    <p class="section-label">취급 의료기기 목록 — 카드를 클릭하면 상세 정보를 볼 수 있습니다.</p>
     <div class="grid" id="device-grid"></div>
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-header">
+        <div class="detail-title" id="detail-title"></div>
+        <button class="detail-close" onclick="closeDetail()">×</button>
+      </div>
+      <table class="detail-table" id="detail-table"></table>
+      <div class="detail-actions">
+        <button class="btn-primary" onclick="callContact()">전화 문의</button>
+        <button class="btn-secondary" id="brochure-btn" style="display:none">브로셔 다운로드</button>
+      </div>
+    </div>
   </div>
   <div id="tab-pharma" class="hidden">
     <p class="section-label">파트너 제약사 — 제품 문의는 하단 연락처로 주세요.</p>
@@ -54,16 +123,74 @@ header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
       <p>제품 문의 · 브로셔 요청</p>
       <strong>주안메디칼 담당자 직통</strong>
     </div>
-    <button class="contact-btn">전화 문의</button>
+    <button class="contact-btn" onclick="callContact()">전화 문의</button>
   </div>
 </div>
 <script>
-var d=['리오젠','카라젠','운드클랏','리젠씰','카티졸','리젠패치','릴리이드K','프리배리','스컬트라','레스틸렌'];
-var p=['대웅바이오','JW중외제약','팜젠사이언스','한국비엠아이','웨일즈메디','아주약품','한국휴텍스제약'];
-var ic='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a5c3a" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4a4 4 0 018 0v2"/></svg>';
-document.getElementById('device-grid').innerHTML=d.map(function(n){return'<div class="card"><div class="card-icon">'+ic+'</div><div class="card-name">'+n+'</div><div class="card-type">의료기기</div><button class="card-btn">자료 요청</button></div>';}).join('');
-document.getElementById('pharma-grid').innerHTML=p.map(function(n){return'<div class="pharma-card">'+n+'</div>';}).join('');
-function showTab(t){document.getElementById('tab-device').classList.toggle('hidden',t!=='device');document.getElementById('tab-pharma').classList.toggle('hidden',t!=='pharma');document.querySelectorAll('.tab').forEach(function(el,i){el.classList.toggle('active',(i===0&&t==='device')||(i===1&&t==='pharma'));});}
+var devices = [
+  {
+    name: '블래드케어', eng: 'BLAD-CARE',
+    model: 'BPBF-500', maker: '바이오플러스(주)',
+    class: '의료기기 4등급 (조직수복용생체재료)',
+    unit: '50mL', storage: '직사광선을 피하고 실온 보관',
+    purpose: '방광상피의 손상된 GAG(Glycosaminoglycans) 층을 보충하여 일시적으로 방광염 증상 개선',
+    brochure: ''
+  },
+  { name: '수술엔', eng: 'SUSUL-N', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '운드클랏', eng: 'WOUNDCLOT', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '리젠씰', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '카티졸', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '리젠패치', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '릴리이드K', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '프리배리', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '스컬트라', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' },
+  { name: '레스틸렌', eng: '', model: '', maker: '', class: '', unit: '', storage: '', purpose: '', brochure: '' }
+];
+var pharmas = ['대웅바이오','JW중외제약','팜젠사이언스','한국비엠아이','웨일즈메디','아주약품','한국휴텍스제약'];
+var ic = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a5c3a" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4a4 4 0 018 0v2"/></svg>';
+var activeIdx = -1;
+var grid = document.getElementById('device-grid');
+devices.forEach(function(d, i) {
+  var el = document.createElement('div');
+  el.className = 'card';
+  el.id = 'card-' + i;
+  el.innerHTML = '<div class="card-icon">' + ic + '</div><div class="card-name">' + d.name + '</div><div class="card-sub">' + (d.eng || '의료기기') + '</div>';
+  el.onclick = function() { toggleDetail(i); };
+  grid.appendChild(el);
+});
+document.getElementById('pharma-grid').innerHTML = pharmas.map(function(n){ return '<div class="pharma-card">' + n + '</div>'; }).join('');
+function toggleDetail(i) {
+  if (activeIdx === i) { closeDetail(); return; }
+  if (activeIdx >= 0) document.getElementById('card-' + activeIdx).classList.remove('active');
+  activeIdx = i;
+  document.getElementById('card-' + i).classList.add('active');
+  var d = devices[i];
+  document.getElementById('detail-title').innerHTML = d.name + '<span>' + d.eng + '</span>';
+  var rows = [
+    ['모델명', d.model], ['제조사', d.maker], ['분류', d.class],
+    ['포장 단위', d.unit], ['저장 방법', d.storage], ['사용 목적', d.purpose]
+  ];
+  document.getElementById('detail-table').innerHTML = rows.filter(function(r){ return r[1]; }).map(function(r){
+    return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+  }).join('');
+  var bb = document.getElementById('brochure-btn');
+  if (d.brochure) { bb.style.display = 'inline-block'; bb.onclick = function(){ window.open(d.brochure); }; }
+  else { bb.style.display = 'none'; }
+  var panel = document.getElementById('detail-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function closeDetail() {
+  if (activeIdx >= 0) document.getElementById('card-' + activeIdx).classList.remove('active');
+  activeIdx = -1;
+  document.getElementById('detail-panel').classList.remove('show');
+}
+function showTab(t) {
+  document.getElementById('tab-device').classList.toggle('hidden', t !== 'device');
+  document.getElementById('tab-pharma').classList.toggle('hidden', t !== 'pharma');
+  document.querySelectorAll('.tab').forEach(function(el, i){ el.classList.toggle('active', (i===0&&t==='device')||(i===1&&t==='pharma')); });
+}
+function callContact() { window.location.href = 'tel:010-0000-0000'; }
 </script>
 </body>
 </html>
