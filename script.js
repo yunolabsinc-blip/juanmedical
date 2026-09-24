@@ -1,4 +1,48 @@
 'use strict';
+// Honor OS motion preferences and offer a persistent on-page pause control.
+const pageRoot = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionToggle = document.querySelector('.motion-toggle');
+let motionPaused = false;
+function syncMotionPreference() {
+  pageRoot.classList.toggle('motion-reduced', reducedMotion.matches);
+  pageRoot.classList.toggle('motion-paused', motionPaused);
+  motionToggle.disabled = reducedMotion.matches;
+  motionToggle.setAttribute('aria-pressed', String(reducedMotion.matches || motionPaused));
+  motionToggle.querySelector('.motion-icon').textContent = reducedMotion.matches || motionPaused ? '▷' : 'Ⅱ';
+  motionToggle.querySelector('.motion-label').textContent = reducedMotion.matches ? '동작 줄이기 적용' : motionPaused ? '모션 재생' : '모션 정지';
+}
+motionToggle.hidden = false;
+motionToggle.addEventListener('click', () => {
+  motionPaused = !motionPaused;
+  syncMotionPreference();
+});
+reducedMotion.addEventListener('change', syncMotionPreference);
+syncMotionPreference();
+document.addEventListener('visibilitychange', () => {
+  pageRoot.classList.toggle('motion-background', document.hidden);
+});
+if ('IntersectionObserver' in window) {
+  const heroObserver = new IntersectionObserver(entries => {
+    pageRoot.classList.toggle('hero-offscreen', !entries[0].isIntersecting);
+  });
+  heroObserver.observe(document.querySelector('.hero'));
+  const revealObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    }
+  }, { threshold: .1 });
+  document.querySelectorAll('.about-grid, .section-heading, .business-card, .strength-copy, .strength-list article, .contact-copy, #inquiry').forEach(element => {
+    if (element.getBoundingClientRect().top >= window.innerHeight && !reducedMotion.matches) {
+      element.classList.add('reveal');
+      revealObserver.observe(element);
+    }
+  });
+}
+
 const menuToggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
 function closeMenu() {
